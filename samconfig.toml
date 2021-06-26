@@ -1,0 +1,16 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "aws-sam-twirp-sample"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-lkitb51qpe5f"
+s3_prefix = "aws-sam-twirp-sample"
+region = "ap-northeast-1"
+confirm_changeset = true
+no_fail_on_empty_changeset = true
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = """
+SsmPath=/dev/aws-sam-twirp-sample/dotenv \
+DomainName=aws-sam-twirp-sample.akiho.com \
+HostedZoneName=akiho.com. \
+CertificateArn=arn:aws:acm:ap-northeast-1:581048640485:certificate/7f358fad-701d-41ab-83db-f9d153182e00"""

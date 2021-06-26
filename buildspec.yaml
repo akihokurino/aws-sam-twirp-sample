@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      golang: 1.14
+    commands:
+      - GO111MODULE=off go get -u google.golang.org/protobuf/cmd/protoc-gen-go
+      - GO111MODULE=off go get -u github.com/google/wire/cmd/wire
+      - go get github.com/twitchtv/twirp/protoc-gen-twirp@v8.0.0
+      - curl -OL https://github.com/google/protobuf/releases/download/v3.9.0/protoc-3.9.0-linux-x86_64.zip
+      - unzip protoc-3.9.0-linux-x86_64.zip -d protoc3
+      - mv protoc3/bin/* /usr/local/bin/
+      - mv protoc3/include/* /usr/local/include/
+  pre_build:
+    commands:
+      - make gen
+  build:
+    commands:
+      - sam build
+  post_build:
+    commands:
+      - sam deploy --no-confirm-changeset

@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  club-server
+Globals:
+  Function:
+    Timeout: 5
+
+Parameters:
+  SsmPath:
+    Type: String
+    Default: /dev/aws-sam-twirp-sample/dotenv
+    Description: ssm prameter key path for dotenv body
+  DomainName:
+    Type: String
+    Default: aws-sam-twirp-sample.akiho.com
+    Description: api service domain name
+  HostedZoneName:
+    Type: String
+    Default: akiho.com.
+    Description: hosted zone name for service domain
+  CertificateArn:
+    Type: String
+    Default: arn:aws:acm:ap-northeast-1:581048640485:certificate/7f358fad-701d-41ab-83db-f9d153182e00
+    Description: certificate arn for service domain
+
+Resources:
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: entrypoint/api
+      Handler: api
+      MemorySize: 128
+      Runtime: go1.x
+      Tracing: Active
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGateway
+            Path: /
+            Method: ANY
+        ProxyApiGreedy:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGateway
+            Path: /{proxy+}
+            Method: ANY
+      Environment:
+        Variables:
+          SSM_PATH: !Ref SsmPath
+      Policies:
+        - AmazonDynamoDBFullAccess
+        - AmazonCognitoPowerUser
+        - AmazonSSMReadOnlyAccess
+        - AmazonSESFullAccess
+        - AmazonS3FullAccess
+
+  ApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: default
+#      Domain:
+#        EndpointConfiguration: REGIONAL
+#        DomainName: !Ref DomainName
+#        Route53:
+#          HostedZoneName: !Ref HostedZoneName
+#        CertificateArn: !Ref CertificateArn
