@@ -71,8 +71,6 @@ Resources:
             Value: !Ref AWS::Region
           - Name: AWS_ACCOUNT_ID
             Value: !Ref AWS::AccountId
-          - Name: ENV
-            Value: !Ref EnvName
         PrivilegedMode: true
       Name: !Ref ProjectName
       ServiceRole: !GetAtt BuildExecutionRole.Arn
