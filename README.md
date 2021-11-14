@@ -1,11 +1,9 @@
-# aws-sam-twirp-sample
-
-## 構成
+## Specs
 - go 1.16
-- twirp 8.0
-- algnhsa
-- aws lambda
-- aws api gateway
-- aws cloud formation
-- aws code pipeline
-- aws ssm parameter
+- twirp 8.0（ https://github.com/twitchtv/twirp ）
+- algnhsa（ https://github.com/akrylysov/algnhsa ）
+- lambda
+- api gateway
+- cloud formation
+- code pipeline
+- ssm
